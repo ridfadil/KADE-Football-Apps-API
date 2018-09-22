@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import subdua.dicoding.farid.footballscheduleapps.api.ApiRepository
-import subdua.dicoding.farid.footballscheduleapps.api.TheSportsDbApi
+import subdua.dicoding.farid.footballscheduleapps.api.EndPointApi
 import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventResponse
 import subdua.dicoding.farid.footballscheduleapps.mvp.model.LeagueResponse
 import subdua.dicoding.farid.footballscheduleapps.mvp.view.MatchView
@@ -21,7 +21,7 @@ class MatchPresenter(val view: MatchView) {
 
         doAsync {
             val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDbApi.getLeagueAll()),
+                    .doRequest(EndPointApi.getLeagueAll()),
                     LeagueResponse::class.java
             )
 
@@ -38,7 +38,7 @@ class MatchPresenter(val view: MatchView) {
 
         doAsync {
             val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDbApi.getLeaguePrev(id)),
+                    .doRequest(EndPointApi.getLeaguePrev(id)),
                     EventResponse::class.java
             )
 
@@ -60,7 +60,7 @@ class MatchPresenter(val view: MatchView) {
 
         doAsync {
             val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDbApi.getLeagueNext(id)),
+                    .doRequest(EndPointApi.getLeagueNext(id)),
                     EventResponse::class.java
             )
 

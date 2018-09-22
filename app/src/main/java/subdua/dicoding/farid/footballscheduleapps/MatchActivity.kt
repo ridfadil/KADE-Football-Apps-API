@@ -14,9 +14,9 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.design.bottomNavigationView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import subdua.dicoding.farid.footballscheduleapps.adapter.MatchAdapter
-import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsItem
+import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsModel
 import subdua.dicoding.farid.footballscheduleapps.mvp.model.LeagueResponse
-import subdua.dicoding.farid.footballscheduleapps.mvp.model.LeaguesItem
+import subdua.dicoding.farid.footballscheduleapps.mvp.model.LeaguesModel
 import subdua.dicoding.farid.footballscheduleapps.mvp.presenter.MatchPresenter
 import subdua.dicoding.farid.footballscheduleapps.mvp.view.MatchView
 import subdua.dicoding.farid.footballscheduleapps.utils.invisible
@@ -32,9 +32,9 @@ class MatchActivity : AppCompatActivity(), MatchView {
     lateinit var recyclerView: RecyclerView
     lateinit var emptyDataView: LinearLayout
 
-    lateinit var league: LeaguesItem
+    lateinit var league: LeaguesModel
 
-    var events: MutableList<EventsItem> = mutableListOf()
+    var events: MutableList<EventsModel> = mutableListOf()
 
     private val ID_BNV = 1
 
@@ -51,17 +51,19 @@ class MatchActivity : AppCompatActivity(), MatchView {
         emptyDataView.invisible()
     }
 
+    override fun showEmptyData() {
+        progressBar.invisible()
+        recyclerView.invisible()
+        emptyDataView.visible()
+    }
+
     override fun hideLoading() {
         progressBar.invisible()
         recyclerView.visible()
         emptyDataView.invisible()
     }
 
-    override fun showEmptyData() {
-        progressBar.invisible()
-        recyclerView.invisible()
-        emptyDataView.visible()
-    }
+
 
     override fun showLeagueList(data: LeagueResponse) {
         spinner.adapter = ArrayAdapter(ctx, android.R.layout.simple_spinner_dropdown_item, data.leagues)
@@ -70,7 +72,7 @@ class MatchActivity : AppCompatActivity(), MatchView {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                league = spinner.selectedItem as LeaguesItem
+                league = spinner.selectedItem as LeaguesModel
 
                 when (presenter.match) {
                     1 -> presenter.getEventsPrev(league.idLeague!!)
@@ -80,15 +82,15 @@ class MatchActivity : AppCompatActivity(), MatchView {
         }
     }
 
-    override fun showEventListPrev(data: List<EventsItem>) {
+    override fun showEventListPrev(data: List<EventsModel>) {
         showEventListData(data)
     }
 
-    override fun showEventListNext(data: List<EventsItem>) {
+    override fun showEventListNext(data: List<EventsModel>) {
         showEventListData(data)
     }
 
-    fun itemClicked(item: EventsItem) {
+    fun itemClicked(item: EventsModel) {
         startActivity<DetailActivity>(INTENT_DETAIL to item)
     }
 
@@ -142,16 +144,15 @@ class MatchActivity : AppCompatActivity(), MatchView {
                     id = ID_BNV
                     backgroundColor = Color.WHITE
 
+
                     menu.apply {
-                        add("Prev. Match")
-                                .setIcon(R.drawable.ic_event)
+                        add("Match")
                                 .setOnMenuItemClickListener {
                                     presenter.getEventsPrev(league.idLeague!!)
                                     false
                                 }
 
                         add("Next Match")
-                                .setIcon(R.drawable.ic_event)
                                 .setOnMenuItemClickListener {
                                     presenter.getEventsNext(league.idLeague!!)
                                     false
@@ -166,13 +167,13 @@ class MatchActivity : AppCompatActivity(), MatchView {
 
     fun setupEnv() {
         presenter = MatchPresenter(this)
-        adapter = MatchAdapter(events, { item: EventsItem -> itemClicked(item) })
+        adapter = MatchAdapter(events, { item: EventsModel -> itemClicked(item) })
 
         presenter.getLeagueAll()
         recyclerView.adapter = adapter
     }
 
-    fun showEventListData(data: List<EventsItem>) {
+    fun showEventListData(data: List<EventsModel>) {
         events.clear()
         events.addAll(data)
         adapter.notifyDataSetChanged()

@@ -11,10 +11,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import org.jetbrains.anko.*
 import subdua.dicoding.farid.footballscheduleapps.R
-import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsItem
+import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsModel
 import subdua.dicoding.farid.footballscheduleapps.utils.DateTime
 
-class MatchAdapter(val items: List<EventsItem>, val clickListener: (EventsItem) -> Unit) : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
+class MatchAdapter(val items: List<EventsModel>, val clickListener: (EventsModel) -> Unit) : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(ItemUI().createView(AnkoContext.create(parent.context, parent)))
 
     override fun getItemCount() = items.size
@@ -31,7 +31,7 @@ class MatchAdapter(val items: List<EventsItem>, val clickListener: (EventsItem) 
         val match_away_team: TextView = view.findViewById(ID_AWAY_TEAM)
         val match_away_score: TextView = view.findViewById(ID_AWAY_SCORE)
 
-        fun bind(item: EventsItem, clickListener: (EventsItem) -> Unit) {
+        fun bind(item: EventsModel, clickListener: (EventsModel) -> Unit) {
             match_date.text = DateTime.getLongDate(item.dateEvent!!)
             match_home_team.text = item.strHomeTeam
             match_home_score.text = item.intHomeScore

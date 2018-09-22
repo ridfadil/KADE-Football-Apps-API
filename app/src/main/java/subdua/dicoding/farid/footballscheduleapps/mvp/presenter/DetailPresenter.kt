@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import subdua.dicoding.farid.footballscheduleapps.api.ApiRepository
-import subdua.dicoding.farid.footballscheduleapps.api.TheSportsDbApi
+import subdua.dicoding.farid.footballscheduleapps.api.EndPointApi
 import subdua.dicoding.farid.footballscheduleapps.mvp.model.TeamDetailResponse
 import subdua.dicoding.farid.footballscheduleapps.mvp.view.DetailView
 
@@ -18,12 +18,12 @@ class DetailPresenter(val view: DetailView) {
 
         doAsync {
             val dataHomeTeam = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDbApi.getTeamDetails(idHomeTeam)),
+                    .doRequest(EndPointApi.getTeamDetails(idHomeTeam)),
                     TeamDetailResponse::class.java
             )
 
             val dataAwayTeam = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDbApi.getTeamDetails(idAwayTeam)),
+                    .doRequest(EndPointApi.getTeamDetails(idAwayTeam)),
                     TeamDetailResponse::class.java
             )
 

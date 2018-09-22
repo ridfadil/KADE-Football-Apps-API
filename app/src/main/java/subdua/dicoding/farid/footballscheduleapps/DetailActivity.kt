@@ -14,8 +14,8 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
-import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsItem
-import subdua.dicoding.farid.footballscheduleapps.mvp.model.TeamsItem
+import subdua.dicoding.farid.footballscheduleapps.mvp.model.EventsModel
+import subdua.dicoding.farid.footballscheduleapps.mvp.model.TeamModel
 import subdua.dicoding.farid.footballscheduleapps.mvp.presenter.DetailPresenter
 import subdua.dicoding.farid.footballscheduleapps.mvp.view.DetailView
 import subdua.dicoding.farid.footballscheduleapps.utils.DateTime
@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val item = intent.getParcelableExtra<EventsItem>(INTENT_DETAIL)
+        val item = intent.getParcelableExtra<EventsModel>(INTENT_DETAIL)
 
         setupLayout(item)
         setupEnv(item)
@@ -72,7 +72,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
         dataView.visible()
     }
 
-    override fun showTeamDetails(dataHomeTeam: List<TeamsItem>, dataAwayTeam: List<TeamsItem>) {
+    override fun showTeamDetails(dataHomeTeam: List<TeamModel>, dataAwayTeam: List<TeamModel>) {
         Picasso.get()
                 .load(dataHomeTeam[0].strTeamBadge)
                 .into(imgHomeBadge)
@@ -82,7 +82,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
                 .into(imgAwayBadge)
     }
 
-    fun setupLayout(item: EventsItem) {
+    fun setupLayout(item: EventsModel) {
         relativeLayout {
             dataView = scrollView {
                 linearLayout {
@@ -352,7 +352,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
         }
     }
 
-    fun setupEnv(item: EventsItem) {
+    fun setupEnv(item: EventsModel) {
         presenter = DetailPresenter(this)
         presenter.getTeamDetails(item.idHomeTeam!!, item.idAwayTeam!!)
 
